@@ -9,7 +9,8 @@ using EcsRx.UI;
 using EcsRx.Unity.Components;
 using EcsRx.Unity.Loader;
 using EcsRx.Unity.Systems;
-using NO1Software.ChessAndCard.Scenes;
+using EcsRx.Views.Systems;
+using EcsRx.Views.ViewHandlers;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,7 +22,7 @@ namespace EcsRx.UI
     {
         private IInstantiator instantiator;
         private IResourceLoader resourceLoader;
-        public override Group TargetGroup
+        public override IGroup Group
         {
             get { return new Group(entity => entity.GetComponent<UIComponent>().IsDynamic && (entity.HasComponent<DialogComponent>() || entity.HasComponent<PopupComponent>()), typeof(UIComponent), typeof(ViewComponent)); }
         }

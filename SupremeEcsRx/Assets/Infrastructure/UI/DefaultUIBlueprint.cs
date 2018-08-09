@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using EcsRx.Blueprints;
 using EcsRx.Entities;
-using EcsRx.Unity.Components;
+using EcsRx.Extensions;
+using EcsRx.Views.Components;
 
 namespace EcsRx.UI
 {
@@ -21,7 +22,7 @@ namespace EcsRx.UI
         public void Apply(IEntity entity)
         {
             var uiComponent = new UIComponent {UIName = uiName, IsDynamic = true, UIType = type};
-            entity.AddComponent(uiComponent);
+            entity.AddComponents(uiComponent);
             entity.AddComponent<ViewComponent>();
             
         }

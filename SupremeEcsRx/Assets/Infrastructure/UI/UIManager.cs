@@ -9,11 +9,8 @@ using EcsRx.Entities;
 using EcsRx.Events;
 using EcsRx.Extensions;
 using EcsRx.Groups;
-using EcsRx.Groups.Accessors;
 using EcsRx.Groups.Observable;
 using EcsRx.MVVM;
-using EcsRx.Pools;
-using EcsRx.Unity.Components;
 using EcsRx.Unity.Events;
 using EcsRx.Unity.UI;
 using EcsRx.Views.Components;
@@ -43,12 +40,12 @@ namespace EcsRx.UI
             CurrentScreen = new ReactiveProperty<IEntity>();
             defaultConllection = collectionManager.GetCollection();
             this.eventSystem = eventSystem;
-            uiGroupAccessor = poolManager.CreateGroupAccessor(new Group(typeof(UIComponent)));
+            uiGroup = collectionManager.GetObservableGroup(new Group(typeof(UIComponent)));
         }
 
         public IEntity GetUI(string ui)
         {
-           return  uiGroupAccessor.Entities.SingleOrDefault(
+           return uiGroup.SingleOrDefault(
                    entity => entity.GetComponent<UIComponent>().UIName == ui);
         }
 

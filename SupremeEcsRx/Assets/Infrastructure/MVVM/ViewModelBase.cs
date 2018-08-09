@@ -6,6 +6,8 @@ using EcsRx.Entities;
 using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Systems;
+using EcsRx.UI;
+using EcsRx.Unity.Components;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -62,7 +64,7 @@ namespace EcsRx.MVVM
             
         }
 
-        public virtual Group TargetGroup {
+        public virtual IGroup Group {
             get { return new Group(entity => entity.GetComponent<UIComponent>().UIName == UIName, typeof (UIComponent), typeof(ViewComponent), typeof(AsyncComponent)); }
         }
 
