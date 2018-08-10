@@ -17,8 +17,6 @@ namespace EcsRx.Unity.Installers
         {
             Container.BindInterfacesAndSelfTo<HttpManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<SocketManager>().AsSingle();
-            //Container.BindFactory<string, int, HttpRequest, HttpRequest.Factory>();
-            Container.BindFactory<string, int, SocketChannel, SocketChannel.Factory>();
             Container.Bind<IHttpProtocol>().To<DefaultHttpProtocol>().AsSingle();
             Container.Bind<ISocketProtocol>().To<SocketProtocol>().AsSingle();
 

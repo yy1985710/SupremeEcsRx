@@ -6,8 +6,9 @@ using EcsRx.Entities;
 using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.UI;
+using EcsRx.Unity.Components;
+using EcsRx.Unity.Loader;
 using EcsRx.Unity.Systems;
-using EcsRx.Views.Components;
 using EcsRx.Views.Systems;
 using EcsRx.Views.ViewHandlers;
 using UniRx;
@@ -15,13 +16,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
+
 namespace EcsRx.UI
 {
     public class DefaultUIViewResolver : ViewResolverSystem
     {
         private IInstantiator instantiator;
         private IResourceLoader resourceLoader;
-        public override Group TargetGroup
+        public override IGroup Group
         {
             get { return new Group(entity => entity.GetComponent<UIComponent>().IsDynamic && !entity.HasComponent<DialogComponent>() && !entity.HasComponent<PopupComponent>(), typeof(UIComponent), typeof(ViewComponent)); }
         }

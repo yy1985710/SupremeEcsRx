@@ -31,7 +31,7 @@ namespace EcsRx.Unity.Network
             socket = new USocket(listener, protocol);
         }
 
-        public class Factory : Factory<string, int, SocketChannel>
+        public class Factory : PlaceholderFactory<string, int, SocketChannel>
         {
         }
 
