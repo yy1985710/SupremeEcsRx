@@ -1,22 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EcsRx.Unity.Loader;
 using EcsRx.Views.ViewHandlers;
+using NO1Software.ABSystem;
 using UnityEngine;
+using UniRx;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace EcsRx.Unity.Handlers
 {
-    public class AssetbundleViewHandler : IViewHandler
+    public class AssetBundleViewHandler : IViewHandler
     {
         private IInstantiator instantiator;
         private IResourceLoader resourceLoader;
 
         protected string AssetBundleTemplate { get; }
 
-        public AssetbundleViewHandler(IInstantiator instantiator, [Inject(Id = "AssetBundle")]IResourceLoader resourceLoader, string assetBundleTemplate)
+        public AssetBundleViewHandler(IInstantiator instantiator, [Inject(Id = "AssetBundle")]IResourceLoader resourceLoader, string assetBundleTemplate)
         {
             this.instantiator = instantiator;
             this.resourceLoader = resourceLoader;
@@ -35,17 +39,17 @@ namespace EcsRx.Unity.Handlers
 
         public object CreateView()
         {
-
+            return null;
         }
 
-        private async void LoadResource()
+        public void CreateView(Action<Object> action)
         {
-            await test();
-        }
-
-        private async Task<int> test()
-        {
-            return 1;
+            resourceLoader.LoadAsyn(AssetBundleTemplate).Subscribe(info =>
+            {
+                var createdPrefab = instantiator.InstantiatePrefab(info.mainObject);
+                info.Require(createdPrefab);
+                action(createdPrefab);
+            });
         }
     }
 }
