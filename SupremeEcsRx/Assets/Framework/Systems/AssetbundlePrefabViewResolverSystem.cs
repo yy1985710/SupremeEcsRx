@@ -7,11 +7,15 @@ using EcsRx.Collections;
 using EcsRx.Entities;
 using EcsRx.Events;
 using EcsRx.Extensions;
+using EcsRx.Framework.Components;
 using EcsRx.Unity.Handlers;
 using EcsRx.Unity.Loader;
+using EcsRx.Unity.MonoBehaviours;
 using EcsRx.Views.Components;
 using EcsRx.Views.Systems;
 using EcsRx.Views.ViewHandlers;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
@@ -41,7 +45,10 @@ namespace EcsRx.Unity.Systems
 
         protected override void OnViewCreated(IEntity entity, ViewComponent viewComponent)
         {
-            throw new NotImplementedException();
+            var gameObject = viewComponent.View as GameObject;
+            OnViewCreated(entity, gameObject);
+            entity.GetComponent<DummyViewComponent>().AsyncView.Value = gameObject;
+            entity.AddComponent<AsyncComponent>();
         }
 
         protected abstract void OnViewCreated(IEntity entity, GameObject view);
@@ -52,8 +59,29 @@ namespace EcsRx.Unity.Systems
             if (viewComponent.View != null) { return; }
 
             var assetBundleViewHandler = ViewHandler as AssetBundleViewHandler;
-            viewComponent.View = assetBundleViewHandler.CreateView();
-            OnViewCreated(entity, viewComponent);
+            assetBundleViewHandler.CreateView(o =>
+            {
+                viewComponent.View = o;
+                OnViewCreated(entity, viewComponent);
+
+                var gameObject = viewComponent.View as GameObject;
+                var entityBinding = gameObject.GetComponent<EntityView>();
+                if (entityBinding == null)
+                {
+                    entityBinding = gameObject.AddComponent<EntityView>();
+                    entityBinding.Entity = entity;
+
+                    entityBinding.EntityCollection = CollectionManager.GetCollectionFor(entity);
+                }
+
+                if (viewComponent.DestroyWithView)
+                {
+                    gameObject.OnDestroyAsObservable()
+                        .Subscribe(x => entityBinding.EntityCollection.RemoveEntity(entity.Id))
+                        .AddTo(gameObject);
+                }
+            } );
+            entity.AddComponent<DummyViewComponent>();
         }
     }
 }

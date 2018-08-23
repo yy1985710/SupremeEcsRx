@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using EcsRx.Unity.Loader;
 using EcsRx.Views.ViewHandlers;
 using NO1Software.ABSystem;
-using UnityEngine;
 using UniRx;
 using Zenject;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace EcsRx.Unity.Handlers
@@ -20,7 +20,7 @@ namespace EcsRx.Unity.Handlers
 
         protected string AssetBundleTemplate { get; }
 
-        public AssetBundleViewHandler(IInstantiator instantiator, [Inject(Id = "AssetBundle")]IResourceLoader resourceLoader, string assetBundleTemplate)
+        public AssetBundleViewHandler(IInstantiator instantiator, IResourceLoader resourceLoader, string assetBundleTemplate)
         {
             this.instantiator = instantiator;
             this.resourceLoader = resourceLoader;

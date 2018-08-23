@@ -7,7 +7,7 @@ using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Systems;
 using EcsRx.UI;
-using EcsRx.Unity.Components;
+using EcsRx.Framework.Components;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;

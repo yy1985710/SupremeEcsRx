@@ -15,11 +15,5 @@ namespace EcsRx.UI
         public bool IsDynamic { get; set; }
 
         public string Container { get; set; }
-        public ReactiveProperty<bool> IsReaday;
-
-        public UIComponent()
-        {
-            IsReaday = new ReactiveProperty<bool>();
-        }
     }
 }

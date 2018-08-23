@@ -25,12 +25,12 @@ namespace EcsRx.Unity.Extensions
         public static T AddUnityComponent<T>(this IEntity entity) where T : MonoBehaviour
         {
             if (!entity.HasComponent<ViewComponent>())
-            { throw new Exception("Entity has no ViewComponent, ensure a valid ViewComponent is applied with an active View"); }
+            { throw new System.Exception("Entity has no ViewComponent, ensure a valid ViewComponent is applied with an active View"); }
 
             var viewComponent = entity.GetComponent<ViewComponent>();
 
             if (viewComponent.View == null)
-            { throw new Exception("Entity's ViewComponent has no assigned View, GameObject has been applied to the View"); }
+            { throw new System.Exception("Entity's ViewComponent has no assigned View, GameObject has been applied to the View"); }
 
             var castView = (GameObject) viewComponent.View;
             return castView.AddComponent<T>();

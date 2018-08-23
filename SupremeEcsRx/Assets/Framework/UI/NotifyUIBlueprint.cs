@@ -6,7 +6,7 @@ using System.Text;
 using EcsRx.Blueprints;
 using EcsRx.Entities;
 using EcsRx.UI;
-using EcsRx.Unity.Components;
+using EcsRx.Framework.Components;
 using UIWidgets;
 using UnityEngine;
 

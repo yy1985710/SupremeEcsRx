@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EcsRx.Collections;
 using EcsRx.Entities;
-using EcsRx.Unity.Components;
+using EcsRx.Framework.Components;
 using EcsRx.Extensions;
 using EcsRx.UI;
 using UniRx;

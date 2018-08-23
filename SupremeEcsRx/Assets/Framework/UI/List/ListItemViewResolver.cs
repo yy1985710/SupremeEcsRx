@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using EcsRx.Entities;
 using EcsRx.Groups;
-using EcsRx.Unity.Components;
+using EcsRx.Framework.Components;
 using EcsRx.Unity.Loader;
 using EcsRx.Unity.Systems;
 using UniRx;

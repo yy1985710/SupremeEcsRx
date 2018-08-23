@@ -6,7 +6,7 @@ using EcsRx.Entities;
 using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.UI;
-using EcsRx.Unity.Components;
+using EcsRx.Framework.Components;
 using EcsRx.Unity.Loader;
 using EcsRx.Unity.Systems;
 using EcsRx.Views.Systems;

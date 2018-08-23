@@ -5,7 +5,7 @@ using System.Text;
 using EcsRx.Components;
 using UnityEngine.SceneManagement;
 
-namespace EcsRx.Unity.Components
+namespace EcsRx.Framework.Components
 {
     public class SceneComponent : IComponent
     {

@@ -4,7 +4,8 @@ using System.Collections;
 using EcsRx.Collections;
 using EcsRx.Entities;
 using EcsRx.Extensions;
-using EcsRx.Unity.Components;
+using EcsRx.Framework.Components;
+using EcsRx.Views.Components;
 using Zenject;
 
 namespace EcsRx.Unity.Audio

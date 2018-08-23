@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Text;
 using EcsRx.Blueprints;
 using EcsRx.Collections;
@@ -11,6 +12,8 @@ using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Groups.Observable;
 using EcsRx.MVVM;
+using EcsRx.Framework.Components;
+using EcsRx.Framework.Extensions;
 using EcsRx.Unity.Events;
 using EcsRx.Unity.UI;
 using EcsRx.Views.Components;
@@ -49,38 +52,31 @@ namespace EcsRx.UI
                    entity => entity.GetComponent<UIComponent>().UIName == ui);
         }
 
-        public IObservable<IEntity> ShowUIAsync(string ui, UIType type)
-        {
-            var uiEntity = CreateUI(new DefaultUIBlueprint(ui, type));
-            return Observable.Create<IEntity>(observer =>
-            {
-                uiEntity.GetComponent<UIComponent>().IsReaday.Subscribe(b =>
-                {
-                    if (b)
-                    {
-                        CreateUI(uiEntity);
-                        observer.OnNext(uiEntity);
-                    }
-                } );
+        //public IObservable<IEntity> ShowUIAsync(string ui, UIType type)
+        //{
+        //    var uiEntity = CreateUI(new DefaultUIBlueprint(ui, type));
+        //    return Observable.Create<IEntity>(observer =>
+        //    {
+        //        uiEntity.GetComponent<UIComponent>().IsReaday.Subscribe(b =>
+        //        {
+        //            if (b)
+        //            {
+        //                CreateUI(uiEntity);
+        //                observer.OnNext(uiEntity);
+        //            }
+        //        } );
                 
-                return Disposable.Empty;
-            } );
+        //        return Disposable.Empty;
+        //    } );
             
-        }
+        //}
 
-        public IEntity ShowUI(string ui, UIType type)
+        public async Task<IEntity> ShowUI(string ui, UIType type)
         {
             var uiEntity = CreateUI(new DefaultUIBlueprint(ui , type));
+            await uiEntity.GetView();
             CreateUI(uiEntity);
             return uiEntity;
-        }
-
-        public IEntity ShowUI(string ui, UIType type, GameObject parent)
-        {
-            var entity = ShowUI(ui, type);
-            var view = entity.GetComponent<ViewComponent>().View as GameObject;
-            view.transform.SetParent(parent.transform, false);
-            return entity;
         }
 
         public IEntity ShowPopup(string ui, string title = null, string message = null, bool model = false, Color? modelColor = null)
@@ -90,24 +86,6 @@ namespace EcsRx.UI
             return uiEntity;
         }
 
-        public IObservable<IEntity> ShowPopupAsync(string ui, string title = null, string message = null, bool model = false, Color? modelColor = null)
-        {
-            var uiEntity = CreateUI(new PopupUIBlueprint(ui, title, message, model, modelColor ?? new Color(0.0f, 0.0f, 0.0f, 0.8f)));
-            return Observable.Create<IEntity>(observer =>
-            {
-                uiEntity.GetComponent<UIComponent>().IsReaday.Subscribe(b =>
-                {
-                    if (b)
-                    {
-                        CreateUI(uiEntity);
-                        observer.OnNext(uiEntity);
-                    }
-                });
-
-                return Disposable.Empty;
-            });
-
-        }
 
         public IEntity ShowDialog(string ui, string title = null, string message = null, DialogActions butttons = null,
             bool model = false, Color? modelColor = null)

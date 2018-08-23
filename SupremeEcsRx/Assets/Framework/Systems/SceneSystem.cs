@@ -9,7 +9,7 @@ using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Infrastructure.Dependencies;
 using EcsRx.Systems;
-using EcsRx.Unity.Components;
+using EcsRx.Framework.Components;
 using EcsRx.Unity.Dependencies;
 using UniRx;
 using UnityEngine.SceneManagement;

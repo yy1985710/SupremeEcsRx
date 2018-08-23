@@ -5,7 +5,7 @@ using System.Text;
 using EcsRx.Components;
 using UnityEngine;
 
-namespace EcsRx.Unity.Components
+namespace EcsRx.Framework.Components
 {
     public class PopupComponent : IComponent
     {

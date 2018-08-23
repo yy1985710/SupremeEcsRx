@@ -7,7 +7,7 @@ using EcsRx.Components;
 using UIWidgets;
 using UnityEngine;
 
-namespace EcsRx.Unity.Components
+namespace EcsRx.Framework.Components
 {
     public class NotifyComponent : IComponent
     {
