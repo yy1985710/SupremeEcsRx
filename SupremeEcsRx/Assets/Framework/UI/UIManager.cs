@@ -52,24 +52,6 @@ namespace EcsRx.UI
                    entity => entity.GetComponent<UIComponent>().UIName == ui);
         }
 
-        //public IObservable<IEntity> ShowUIAsync(string ui, UIType type)
-        //{
-        //    var uiEntity = CreateUI(new DefaultUIBlueprint(ui, type));
-        //    return Observable.Create<IEntity>(observer =>
-        //    {
-        //        uiEntity.GetComponent<UIComponent>().IsReaday.Subscribe(b =>
-        //        {
-        //            if (b)
-        //            {
-        //                CreateUI(uiEntity);
-        //                observer.OnNext(uiEntity);
-        //            }
-        //        } );
-                
-        //        return Disposable.Empty;
-        //    } );
-            
-        //}
 
         public async Task<IEntity> ShowUI(string ui, UIType type)
         {
@@ -79,23 +61,25 @@ namespace EcsRx.UI
             return uiEntity;
         }
 
-        public IEntity ShowPopup(string ui, string title = null, string message = null, bool model = false, Color? modelColor = null)
+        public async Task<IEntity> ShowPopup(string ui, string title = null, string message = null, bool model = false, Color? modelColor = null)
         {
             var uiEntity = CreateUI(new PopupUIBlueprint(ui, title, message, model, modelColor??new Color(0.0f, 0.0f, 0.0f, 0.8f)));
+            await uiEntity.GetView();
             CreateUI(uiEntity);
             return uiEntity;
         }
 
 
-        public IEntity ShowDialog(string ui, string title = null, string message = null, DialogActions butttons = null,
+        public async Task<IEntity> ShowDialog(string ui, string title = null, string message = null, DialogActions butttons = null,
             bool model = false, Color? modelColor = null)
         {
             var uiEntity = CreateUI(new DialogUIBlueprint(ui, title, message, butttons, model, modelColor ?? new Color(0.0f, 0.0f, 0.0f, 0.8f)));
+            await uiEntity.GetView();
             CreateUI(uiEntity);
             return uiEntity;
         }
 
-        public IEntity ShowNotify(string ui,
+        public async Task<IEntity> ShowNotify(string ui,
             string message = null,
             float? customHideDelay = null,
             Transform container = null,
@@ -109,6 +93,7 @@ namespace EcsRx.UI
         {
             var uiEntity = CreateUI(new NotifyUIBlueprint(ui, message, customHideDelay, container, showAnimation, 
                 hideAnimation, slideUpOnHide, sequenceType, sequenceDelay, clearSequence, newUnscaledTime));
+            await uiEntity.GetView();
             CreateUI(uiEntity);
             return uiEntity;
         }

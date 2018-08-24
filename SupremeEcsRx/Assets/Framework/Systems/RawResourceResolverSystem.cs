@@ -12,6 +12,7 @@ using EcsRx.Systems;
 using EcsRx.Framework.Components;
 using EcsRx.Unity.Loader;
 using EcsRx.Unity.MonoBehaviours;
+using EcsRx.Views.Systems;
 using NO1Software.ABSystem;
 using UniRx;
 using UniRx.Triggers;
@@ -19,7 +20,7 @@ using Zenject;
 
 namespace EcsRx.Unity.Systems
 {
-    public abstract class RawResourceResolverSystem : ISetupSystem, IDisposable
+    public abstract class RawResourceResolverSystem : ViewResolverSystem
     {
         private readonly IDictionary<Guid, AssetBundleInfo> rawResourcesCache;
         private readonly List<GameObject> hostCache;
@@ -32,7 +33,7 @@ namespace EcsRx.Unity.Systems
 
         protected abstract void ResolveResource(IEntity entity, Action<AssetBundleInfo> callback);
 
-        protected RawResourceResolverSystem(IEntityCollectionManager collectionManager, IEventSystem eventSystem, IResourceLoader resourceLoader)
+        protected RawResourceResolverSystem(IEntityCollectionManager collectionManager, IEventSystem eventSystem, IResourceLoader resourceLoader) : base(eventSystem)
         {
             CollectionManager = collectionManager;
             EventSystem = eventSystem;

@@ -14,15 +14,19 @@ using EcsRx.Unity.MonoBehaviours;
 using EcsRx.Views.Components;
 using EcsRx.Views.Systems;
 using EcsRx.Views.ViewHandlers;
+using NO1Software.ABSystem;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace EcsRx.Unity.Systems
 {
-    public abstract class AssetBundlePrefabViewResolverSystem : ViewResolverSystem
+    public abstract class AssetBundlePrefabViewResolverSystem : PrefabViewResolverSystem
     {
+        private GameObject prefab;
+        private AssetBundleInfo assetBundleInfo;
         public IEntityCollectionManager CollectionManager { get; }
         public IInstantiator Instantiator { get; }
 
@@ -30,58 +34,32 @@ namespace EcsRx.Unity.Systems
 
         protected abstract string AssetBundleTemplate { get; }
 
-        protected AssetBundlePrefabViewResolverSystem(IEntityCollectionManager collectionManager, IEventSystem eventSystem, IInstantiator instantiator, IResourceLoader resourceLoader) : base(eventSystem)
+        protected override GameObject PrefabTemplate => prefab;
+
+        protected AssetBundlePrefabViewResolverSystem(IEntityCollectionManager collectionManager, IEventSystem eventSystem, IInstantiator instantiator, IResourceLoader resourceLoader) 
+            : base(collectionManager, eventSystem, instantiator)
         {
-            CollectionManager = collectionManager;
-            Instantiator = instantiator;
             ResourceLoader = resourceLoader;
-            ViewHandler = CreateViewHandler();
         }
 
-        protected IViewHandler CreateViewHandler()
-        { return new AssetBundleViewHandler(Instantiator, ResourceLoader, AssetBundleTemplate); }
-
-        public override IViewHandler ViewHandler { get; }
-
-        protected override void OnViewCreated(IEntity entity, ViewComponent viewComponent)
+        protected override void OnViewCreated(IEntity entity, GameObject view)
         {
-            var gameObject = viewComponent.View as GameObject;
-            OnViewCreated(entity, gameObject);
-            entity.GetComponent<DummyViewComponent>().AsyncView.Value = gameObject;
+            assetBundleInfo.Require(view);
+            entity.GetComponent<DummyViewComponent>().AsyncView.Value = view;
             entity.AddComponent<AsyncComponent>();
         }
 
-        protected abstract void OnViewCreated(IEntity entity, GameObject view);
-
-        public override void Setup(IEntity entity)
+        public override async void Setup(IEntity entity)
         {
-            var viewComponent = entity.GetComponent<ViewComponent>();
-            if (viewComponent.View != null) { return; }
-
-            var assetBundleViewHandler = ViewHandler as AssetBundleViewHandler;
-            assetBundleViewHandler.CreateView(o =>
-            {
-                viewComponent.View = o;
-                OnViewCreated(entity, viewComponent);
-
-                var gameObject = viewComponent.View as GameObject;
-                var entityBinding = gameObject.GetComponent<EntityView>();
-                if (entityBinding == null)
-                {
-                    entityBinding = gameObject.AddComponent<EntityView>();
-                    entityBinding.Entity = entity;
-
-                    entityBinding.EntityCollection = CollectionManager.GetCollectionFor(entity);
-                }
-
-                if (viewComponent.DestroyWithView)
-                {
-                    gameObject.OnDestroyAsObservable()
-                        .Subscribe(x => entityBinding.EntityCollection.RemoveEntity(entity.Id))
-                        .AddTo(gameObject);
-                }
-            } );
             entity.AddComponent<DummyViewComponent>();
+            prefab = await GetPrefab() as GameObject;
+            base.Setup(entity);
+        }
+
+        protected async Task<Object> GetPrefab()
+        {
+            assetBundleInfo = await ResourceLoader.LoadAsyn(AssetBundleTemplate);
+            return assetBundleInfo.mainObject;
         }
     }
 }
