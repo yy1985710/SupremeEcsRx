@@ -13,10 +13,10 @@ namespace EcsRx.Unity.Extensions
         public static void LinkEntity(this GameObject gameObject, IEntity entity, IEntityCollection withinPool)
         {
             if(gameObject.GetComponent<EntityView>())
-            { throw new Exception("GameObject already has an EntityView monobehaviour applied"); }
+            { throw new System.Exception("GameObject already has an EntityView monobehaviour applied"); }
 
             if (gameObject.GetComponent<RegisterAsEntity>())
-            { throw new Exception("GameObject already has a RegisterAsEntity monobehaviour applied"); }
+            { throw new System.Exception("GameObject already has a RegisterAsEntity monobehaviour applied"); }
 
             if (!entity.HasComponent<ViewComponent>())
             { entity.AddComponent<ViewComponent>(); }

@@ -22,7 +22,6 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
-using EventSystem = EcsRx.Events.EventSystem;
 
 namespace EcsRx.UI
 {

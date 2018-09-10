@@ -11,6 +11,7 @@ using EcsRx.Infrastructure.Dependencies;
 using EcsRx.Systems;
 using EcsRx.Framework.Components;
 using EcsRx.Unity.Dependencies;
+using EcsRx.Zenject.Dependencies;
 using UniRx;
 using UnityEngine.SceneManagement;
 using Zenject;
