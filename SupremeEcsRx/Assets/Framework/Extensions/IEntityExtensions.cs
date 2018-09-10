@@ -13,9 +13,6 @@ namespace EcsRx.Framework.Extensions
 {
     public static class IEntityExtensions
     {
-        public static async Task<GameObject> GetView(this IEntity entity)
-        {
-            return await entity.GetComponent<DummyViewComponent>().AsyncView;
-        }
+       
     }
 }

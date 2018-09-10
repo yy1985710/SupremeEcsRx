@@ -10,6 +10,7 @@ using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Systems;
 using EcsRx.Framework.Components;
+using EcsRx.Framework.Handlers;
 using EcsRx.Unity.Loader;
 using EcsRx.Unity.MonoBehaviours;
 using EcsRx.Views.Components;
@@ -25,83 +26,39 @@ namespace EcsRx.Unity.Systems
     public abstract class RawResourceResolverSystem : ISetupSystem, ITeardownSystem
     {
         public virtual IGroup Group { get{return new Group(typeof(RawResourceComponent));} }
-        public abstract IViewHandler ViewHandler { get; }
+        public abstract IViewHandlerEx ViewHandlerEx { get; }
 
         public IEntityCollectionManager CollectionManager { get; private set; }
         public IResourceLoader ResourceLoader { get; private set; }
 
+        protected abstract string RawResourceTemplate { get; }
         protected RawResourceResolverSystem(IEntityCollectionManager collectionManager, IResourceLoader resourceLoader)
         {
             CollectionManager = collectionManager;
             ResourceLoader = resourceLoader;
         }
 
-        public void Setup(IEntity entity)
+        protected abstract void OnViewCreated(IEntity entity, RawResourceComponent rawResourceComponent);
+
+        public async void Setup(IEntity entity)
         {
-            ResolveResource(entity, info =>
-            {
+            var rawResourceComponent = entity.GetComponent<RawResourceComponent>();
+            if (rawResourceComponent.AssetBundle != null) { return; }
 
-                info.Retain();
-                rawResourcesCache.Add(entity.Id, info);
-                var rawResourceComponent = entity.GetComponent<RawResourceComponent>();
-                var entityBinding = rawResourceComponent.Host.GetComponent<EntityView>();
-                if (entityBinding == null)
-                {
-                    entityBinding = rawResourceComponent.Host.AddComponent<EntityView>();
-                   
-                }
-               
-                var substitedEntityView = rawResourceComponent.Host.GetComponent<SubstitedEntityView>();
-                if (substitedEntityView == null)
-                {
-                    substitedEntityView = rawResourceComponent.Host.AddComponent<SubstitedEntityView>();
-                }
-                 
-                substitedEntityView.Entity = entityBinding.Entity;
-                substitedEntityView.Pool = entityBinding.Pool;
+            rawResourceComponent.AssetBundle = await ViewHandlerEx.CreateRawResource();
+            OnViewCreated(entity, rawResourceComponent);
 
-                entityBinding.Entity = entity;
-                entityBinding.Pool = PoolManager.GetContainingPoolFor(entity);
-
-                var find = hostCache.Find(o => o == rawResourceComponent.Host);
-                if (find == null)
-                {
-                    rawResourceComponent.Host.OnDestroyAsObservable()
-                        .Subscribe(x =>
-                        {
-                            entityBinding.Pool.RemoveEntity(entity);
-                            hostCache.Remove(rawResourceComponent.Host);
-                        })
-                        .AddTo(rawResourceComponent.Host);
-                    hostCache.Add(rawResourceComponent.Host);
-                }
-                
-
-                entity.AddComponent<AsyncComponent>();
-            } );
-           
         }
 
         protected virtual void OnViewRemoved(IEntity entity, RawResourceComponent rawResourceComponent)
         {
-            this.ViewHandler.DestroyView(rawResourceComponent.AssetBundle);
-        }
-
-        protected abstract void OnViewCreated(IEntity entity, RawResourceComponent rawResourceComponent);
-
-        public virtual async void Setup(IEntity entity)
-        {
-            RawResourceComponent component = entity.GetComponent<RawResourceComponent>();
-            if (component.AssetBundle != null)
-                return;
-            component.AssetBundle = this.ViewHandler.CreateView() as AssetBundleInfo;
-            this.OnViewCreated(entity, component);
+            ViewHandlerEx.DestroyRawResource(rawResourceComponent.AssetBundle);
         }
 
         public virtual void Teardown(IEntity entity)
         {
             RawResourceComponent component = entity.GetComponent<RawResourceComponent>();
-            this.OnViewRemoved(entity, component);
+            OnViewRemoved(entity, component);
         }
     }
 
