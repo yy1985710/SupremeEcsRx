@@ -12,7 +12,9 @@ using EcsRx.Systems;
 using EcsRx.Framework.Components;
 using EcsRx.Unity.Loader;
 using EcsRx.Unity.MonoBehaviours;
+using EcsRx.Views.Components;
 using EcsRx.Views.Systems;
+using EcsRx.Views.ViewHandlers;
 using NO1Software.ABSystem;
 using UniRx;
 using UniRx.Triggers;
@@ -20,37 +22,18 @@ using Zenject;
 
 namespace EcsRx.Unity.Systems
 {
-    public abstract class RawResourceResolverSystem : ViewResolverSystem
+    public abstract class RawResourceResolverSystem : ISetupSystem, ITeardownSystem
     {
-        private readonly IDictionary<Guid, AssetBundleInfo> rawResourcesCache;
-        private readonly List<GameObject> hostCache;
-        private readonly IDisposable entitySubscription;
-        public virtual Group TargetGroup { get{return new Group(typeof(RawResourceComponent));} }
+        public virtual IGroup Group { get{return new Group(typeof(RawResourceComponent));} }
+        public abstract IViewHandler ViewHandler { get; }
+
         public IEntityCollectionManager CollectionManager { get; private set; }
-        public IEventSystem EventSystem { get; private set; }
         public IResourceLoader ResourceLoader { get; private set; }
 
-
-        protected abstract void ResolveResource(IEntity entity, Action<AssetBundleInfo> callback);
-
-        protected RawResourceResolverSystem(IEntityCollectionManager collectionManager, IEventSystem eventSystem, IResourceLoader resourceLoader) : base(eventSystem)
+        protected RawResourceResolverSystem(IEntityCollectionManager collectionManager, IResourceLoader resourceLoader)
         {
             CollectionManager = collectionManager;
-            EventSystem = eventSystem;
             ResourceLoader = resourceLoader;
-
-            rawResourcesCache = new Dictionary<Guid, AssetBundleInfo>();
-            hostCache = new List<GameObject>();
-
-            entitySubscription = EventSystem
-                .Receive<ComponentRemovedEvent>()
-                .Where(x => x.Component is RawResourceComponent && rawResourcesCache.ContainsKey(x.Entity.Id))
-                .Subscribe(x =>
-                {
-                    var rawResource = rawResourcesCache[x.Entity.Id];
-                    rawResource.Release();
-                    rawResourcesCache.Remove(x.Entity.Id);
-                });
         }
 
         public void Setup(IEntity entity)
@@ -99,8 +82,27 @@ namespace EcsRx.Unity.Systems
            
         }
 
-        public void Dispose()
-        { entitySubscription.Dispose(); }
+        protected virtual void OnViewRemoved(IEntity entity, RawResourceComponent rawResourceComponent)
+        {
+            this.ViewHandler.DestroyView(rawResourceComponent.AssetBundle);
+        }
+
+        protected abstract void OnViewCreated(IEntity entity, RawResourceComponent rawResourceComponent);
+
+        public virtual async void Setup(IEntity entity)
+        {
+            RawResourceComponent component = entity.GetComponent<RawResourceComponent>();
+            if (component.AssetBundle != null)
+                return;
+            component.AssetBundle = this.ViewHandler.CreateView() as AssetBundleInfo;
+            this.OnViewCreated(entity, component);
+        }
+
+        public virtual void Teardown(IEntity entity)
+        {
+            RawResourceComponent component = entity.GetComponent<RawResourceComponent>();
+            this.OnViewRemoved(entity, component);
+        }
     }
 
 }

@@ -23,25 +23,24 @@ using Object = UnityEngine.Object;
 
 namespace EcsRx.Unity.Systems
 {
-    public abstract class AssetBundlePrefabViewResolverSystem : PrefabViewResolverSystem
+    public abstract class AsyncPrefabViewResolverSystem : PrefabViewResolverSystem
     {
         private GameObject prefab;
         private AssetBundleInfo assetBundleInfo;
-        public IEntityCollectionManager CollectionManager { get; }
-        public IInstantiator Instantiator { get; }
 
         public IResourceLoader ResourceLoader { get; }
 
-        protected abstract string AssetBundleTemplate { get; }
+        
 
         protected override GameObject PrefabTemplate => prefab;
 
-        protected AssetBundlePrefabViewResolverSystem(IEntityCollectionManager collectionManager, IEventSystem eventSystem, IInstantiator instantiator, IResourceLoader resourceLoader) 
+        protected AsyncPrefabViewResolverSystem(IEntityCollectionManager collectionManager, IEventSystem eventSystem, IInstantiator instantiator, IResourceLoader resourceLoader) 
             : base(collectionManager, eventSystem, instantiator)
         {
             ResourceLoader = resourceLoader;
         }
 
+        protected abstract string AssetBundleTemplate(IEntity entity);
         protected override void OnViewCreated(IEntity entity, GameObject view)
         {
             assetBundleInfo.Require(view);
@@ -52,13 +51,13 @@ namespace EcsRx.Unity.Systems
         public override async void Setup(IEntity entity)
         {
             entity.AddComponent<DummyViewComponent>();
-            prefab = await GetPrefab() as GameObject;
+            prefab = await GetPrefab(entity) as GameObject;
             base.Setup(entity);
         }
 
-        protected async Task<Object> GetPrefab()
+        protected async Task<Object> GetPrefab(IEntity entity)
         {
-            assetBundleInfo = await ResourceLoader.LoadAsyn(AssetBundleTemplate);
+            assetBundleInfo = await ResourceLoader.LoadAsyn(AssetBundleTemplate(entity));
             return assetBundleInfo.mainObject;
         }
     }
