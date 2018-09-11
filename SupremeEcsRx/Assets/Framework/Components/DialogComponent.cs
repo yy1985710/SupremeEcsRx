@@ -6,7 +6,7 @@ using EcsRx.Components;
 using UIWidgets;
 using UnityEngine;
 
-namespace EcsRx.Framework.Components
+namespace EcsRx.Unity.Components
 {
     public class DialogComponent : IComponent
     {

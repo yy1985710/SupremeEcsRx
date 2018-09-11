@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using EcsRx.Blueprints;
 using EcsRx.Entities;
+using EcsRx.Extensions;
 using EcsRx.UI;
-using EcsRx.Framework.Components;
+using EcsRx.Unity.Components;
+using EcsRx.Views.Components;
 using UIWidgets;
 using UnityEngine;
 
@@ -34,8 +36,7 @@ namespace EcsRx.Unity.UI
         {
             var uiComponent = new UIComponent { UIName = uiName, IsDynamic = true, UIType = UIType.UI_DIALOG };
             var dialogComponent = new DialogComponent { Title = title, Message = message, Buttons = buttons, Model = model, ModalColor = modelColor };
-            entity.AddComponent(uiComponent);
-            entity.AddComponent(dialogComponent);
+            entity.AddComponents(uiComponent, dialogComponent);
             entity.AddComponent<ViewComponent>();
         }
     }

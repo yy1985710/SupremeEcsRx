@@ -1,43 +1,42 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Threading.Tasks;
+using EcsRx.Collections;
 using EcsRx.Entities;
+using EcsRx.Extensions;
 using EcsRx.Groups;
-using EcsRx.Framework.Components;
+using EcsRx.Unity.Dependencies;
 using EcsRx.Unity.Loader;
 using EcsRx.Unity.Systems;
+using EcsRx.Views.Components;
+using EcsRx.Views.Systems;
+using EcsRx.Views.ViewHandlers;
 using UniRx;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace EcsRx.UI
 {
-    public class ListItemViewResolver : ViewResolverSystem
+    public class ListItemViewResolver : AssetBundlePrefabViewResolverSystem
     {
-        private IInstantiator instantiator;
-        private IResourceLoader resourceLoader;
-
-        public override Group TargetGroup
+        public override IGroup Group
         {
             get { return new Group(typeof(ListItemComponent), typeof(ViewComponent)); }
         }
 
-        public ListItemViewResolver(IViewHandler viewHandler, IInstantiator instantiator, [Inject(Id = "AssetBundle")]IResourceLoader resourceLoader) : base(viewHandler)
+        public override string ResourcePath { get; set; }
+
+        public ListItemViewResolver(IEntityCollectionManager collectionManager, IUnityInstantiator instantiator, [Inject(Id = "AssetBundle")]IResourceLoader resourceLoader) : base(collectionManager, instantiator, resourceLoader)
         {
-            this.instantiator = instantiator;
-            this.resourceLoader = resourceLoader;
+           
         }
 
-        public override void ResolveView(IEntity entity, Action<GameObject> callback)
+        public override async Task<Object> CreateView(IEntity entity)
         {
             ListItemComponent listItemComponet = entity.GetComponent<ListItemComponent>();
-            resourceLoader.LoadAsyn(UIManager.AssetBundlePath + listItemComponet.ItemName + ".prefab").Subscribe(info =>
-            {
-                Transform container = listItemComponet.List.transform;
-                GameObject item = instantiator.InstantiatePrefab(info.mainObject, container);
-                info.Require(item);
-                callback(item);
-                entity.AddComponent<AsyncComponent>();
-            });
+            ResourcePath = UIManager.AssetBundlePath + listItemComponet.ItemName + ".prefab";
+            return await base.CreateView(entity);
         }
     }
 

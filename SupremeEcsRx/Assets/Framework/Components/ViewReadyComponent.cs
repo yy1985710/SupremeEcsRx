@@ -4,9 +4,9 @@ using EcsRx.Entities;
 using UniRx;
 using UnityEngine;
 
-namespace EcsRx.Framework.Components
+namespace EcsRx.Unity.Components
 {
-    public class AsyncComponent : IComponent
+    public class ViewReadyComponent : IComponent
     {
     }
 }

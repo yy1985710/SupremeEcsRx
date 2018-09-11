@@ -1058,7 +1058,7 @@ namespace EcsRx.Unity {
 
                 default:
                     {
-                        throw new Exception("Error deserializing JSON. Unknown tag: " + type);
+                        throw new System.Exception("Error deserializing JSON. Unknown tag: " + type);
                     }
             }
         }
@@ -1073,17 +1073,17 @@ namespace EcsRx.Unity {
 
         public static JSONNode LoadFromCompressedBase64(string aBase64)
         {
-            throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
+            throw new System.Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 
         public static JSONNode LoadFromCompressedFile(string aFileName)
         {
-            throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
+            throw new System.Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 
         public static JSONNode LoadFromCompressedStream(System.IO.Stream aData)
         {
-            throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
+            throw new System.Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 
         public static JSONNode LoadFromFile(string aFileName)
@@ -1163,7 +1163,7 @@ namespace EcsRx.Unity {
                             break;
                         }
                         if (stack.Count == 0)
-                            throw new Exception("JSON Parse: Too many closing brackets");
+                            throw new System.Exception("JSON Parse: Too many closing brackets");
 
                         stack.Pop();
                         if (Token != "")
@@ -1253,7 +1253,7 @@ namespace EcsRx.Unity {
             }
             if (QuoteMode)
             {
-                throw new Exception("JSON Parse: Quotation marks seems to be messed up.");
+                throw new System.Exception("JSON Parse: Quotation marks seems to be messed up.");
             }
             return ctx;
         }
@@ -1270,17 +1270,17 @@ namespace EcsRx.Unity {
 
         public string SaveToCompressedBase64()
         {
-            throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
+            throw new System.Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 
         public void SaveToCompressedFile(string aFileName)
         {
-            throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
+            throw new System.Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 
         public void SaveToCompressedStream(System.IO.Stream aData)
         {
-            throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
+            throw new System.Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 
         public void SaveToStream(System.IO.Stream aData)

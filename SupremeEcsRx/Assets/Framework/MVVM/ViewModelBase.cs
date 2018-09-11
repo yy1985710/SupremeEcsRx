@@ -7,7 +7,8 @@ using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Systems;
 using EcsRx.UI;
-using EcsRx.Framework.Components;
+using EcsRx.Unity.Components;
+using EcsRx.Views.Components;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -65,7 +66,7 @@ namespace EcsRx.MVVM
         }
 
         public virtual IGroup Group {
-            get { return new Group(entity => entity.GetComponent<UIComponent>().UIName == UIName, typeof (UIComponent), typeof(ViewComponent), typeof(AsyncComponent)); }
+            get { return new Group(entity => entity.GetComponent<UIComponent>().UIName == UIName, typeof (UIComponent), typeof(ViewComponent), typeof(ViewReadyComponent)); }
         }
 
         public void Setup(IEntity entity)
@@ -75,7 +76,7 @@ namespace EcsRx.MVVM
            // viewComponet.View.SetActive(false);
             var model = CreateModel();
             var view = CreateView(entity);
-            view.InitWithView(viewComponet.View);
+            view.InitWithView(viewComponet.View as GameObject);
             Initialize(view, model);
 
             //viewComponet.View.SetActive(true);

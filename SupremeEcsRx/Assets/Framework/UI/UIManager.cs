@@ -12,8 +12,6 @@ using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Groups.Observable;
 using EcsRx.MVVM;
-using EcsRx.Framework.Components;
-using EcsRx.Framework.Extensions;
 using EcsRx.Unity.Events;
 using EcsRx.Unity.UI;
 using EcsRx.Views.Components;

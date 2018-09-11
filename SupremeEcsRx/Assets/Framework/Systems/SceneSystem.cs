@@ -9,7 +9,7 @@ using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Infrastructure.Dependencies;
 using EcsRx.Systems;
-using EcsRx.Framework.Components;
+using EcsRx.Unity.Components;
 using EcsRx.Unity.Dependencies;
 using EcsRx.Zenject.Dependencies;
 using UniRx;

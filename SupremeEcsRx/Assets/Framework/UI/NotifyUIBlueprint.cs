@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using EcsRx.Blueprints;
 using EcsRx.Entities;
+using EcsRx.Extensions;
 using EcsRx.UI;
-using EcsRx.Framework.Components;
+using EcsRx.Unity.Components;
+using EcsRx.Views.Components;
 using UIWidgets;
 using UnityEngine;
 
@@ -60,8 +62,7 @@ namespace EcsRx.Unity.UI
                 HideAnimation = hideAnimation,  SlideUpOnHide = slideUpOnHide, SequenceType = sequenceType, SequenceDelay = sequenceDelay,
                 ClearSequence = clearSequence, NewUnscaledTime = newUnscaledTime
             };
-            entity.AddComponent(uiComponent);
-            entity.AddComponent(notifyComponent);
+            entity.AddComponents(uiComponent, notifyComponent);
             entity.AddComponent<ViewComponent>();
         }
     }

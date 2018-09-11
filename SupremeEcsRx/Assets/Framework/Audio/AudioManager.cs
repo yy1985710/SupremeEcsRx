@@ -4,7 +4,7 @@ using System.Collections;
 using EcsRx.Collections;
 using EcsRx.Entities;
 using EcsRx.Extensions;
-using EcsRx.Framework.Components;
+using EcsRx.Unity.Components;
 using EcsRx.Views.Components;
 using Zenject;
 
@@ -39,7 +39,7 @@ namespace EcsRx.Unity.Audio
         public IEntity PlayBackgroundMusic(string name)
         {
             var entity = defaultCollection.CreateEntity();
-            entity.AddComponents(new MusicComponent { Name = name}, new RawResourceComponent { Host = BackgroundMusic });
+            entity.AddComponents(new MusicComponent(), new RawResourceComponent { Name = name });
             return entity;
         }
 

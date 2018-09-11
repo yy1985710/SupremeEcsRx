@@ -21,7 +21,7 @@ namespace EcsRx.UI
         public virtual void Apply(IEntity entity)
         {
             var listItemComponent = new ListItemComponent{ItemName = itemName, List = list, ID = id};
-            entity.AddComponent(listItemComponent);
+            entity.AddComponents(listItemComponent);
         }
     }
 
