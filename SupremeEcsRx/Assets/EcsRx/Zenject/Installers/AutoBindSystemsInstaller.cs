@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using EcsRx.Unity.Installers;
 using Zenject;
 
 namespace EcsRx.Zenject.Installers

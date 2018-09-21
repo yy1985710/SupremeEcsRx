@@ -1,3 +1,9 @@
+using System.Linq;
+using EcsRx.Extensions;
+using EcsRx.Infrastructure.Dependencies;
+using EcsRx.Systems;
+using EcsRx.Unity.Installers;
+using EcsRx.Views.Systems;
 using Zenject;
 
 namespace EcsRx.Zenject.Extensions
