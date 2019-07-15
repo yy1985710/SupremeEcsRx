@@ -7,10 +7,9 @@ namespace BindingsRx.Filters
     {
         private readonly IObservable<long> _sampleRateObservable;
         public ReactiveProperty<TimeSpan> SampleRate { get; set; }
-        public ReactiveProperty<bool> Result { get; set; }
+
         public DynamicSampleFilter(TimeSpan sampleRate)
         {
-            Result = new ReactiveProperty<bool>(true);
             SampleRate = new ReactiveProperty<TimeSpan>(sampleRate);
             _sampleRateObservable = SampleRate.Select(Observable.Interval).Switch();
         }
@@ -24,7 +23,6 @@ namespace BindingsRx.Filters
         public void Dispose()
         {
             SampleRate.Dispose();
-            Result.Dispose();
         }
     }
 }
