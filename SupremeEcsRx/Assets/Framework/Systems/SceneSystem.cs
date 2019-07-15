@@ -8,6 +8,8 @@ using EcsRx.Executor;
 using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Infrastructure.Dependencies;
+using EcsRx.Infrastructure.Extensions;
+using EcsRx.Plugins.ReactiveSystems.Systems;
 using EcsRx.Systems;
 using EcsRx.Unity.Components;
 using EcsRx.Unity.Dependencies;

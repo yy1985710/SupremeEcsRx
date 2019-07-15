@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using EcsRx.Components;
-using EcsRx.Unity.Extensions;
 using EcsRx.Unity.MonoBehaviours;
-using EcsRx.Unity.UIAspects;
 using EcsRx.Plugins.Views.Components;
+using EcsRx.Unity.Extensions;
+using EcsRx.Unity.UIAspects;
 using UnityEditor;
 using UnityEngine;
 

@@ -1,12 +1,12 @@
-﻿using EcsRx.Unity.Dependencies;
-using EcsRx.Collections;
+﻿using EcsRx.Collections;
 using EcsRx.Entities;
 using EcsRx.Events;
 using EcsRx.Extensions;
 using EcsRx.Groups;
 using EcsRx.Plugins.ReactiveSystems.Systems;
-using EcsRx.Unity.MonoBehaviours;
 using EcsRx.Plugins.Views.Components;
+using EcsRx.Unity.Dependencies;
+using EcsRx.Unity.MonoBehaviours;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;

@@ -8,8 +8,8 @@ using EcsRx.Entities;
 using EcsRx.Events;
 using EcsRx.Extensions;
 using EcsRx.Groups;
+using EcsRx.Plugins.Views.Components;
 using EcsRx.Unity.Components;
-using EcsRx.Views.Components;
 using UniRx;
 using UniRx.Triggers;
 

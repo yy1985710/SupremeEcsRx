@@ -5,9 +5,9 @@ using System.Text;
 using EcsRx.Blueprints;
 using EcsRx.Entities;
 using EcsRx.Extensions;
+using EcsRx.Plugins.Views.Components;
 using EcsRx.UI;
 using EcsRx.Unity.Components;
-using EcsRx.Views.Components;
 using UIWidgets;
 using UnityEngine;
 

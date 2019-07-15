@@ -2,6 +2,7 @@
 using System.Collections;
 using EcsRx.Blueprints;
 using EcsRx.Entities;
+using EcsRx.Extensions;
 
 namespace EcsRx.UI
 {

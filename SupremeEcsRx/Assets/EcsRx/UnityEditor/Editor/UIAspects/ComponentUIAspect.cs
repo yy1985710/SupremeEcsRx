@@ -1,7 +1,7 @@
 ﻿using System;
 using EcsRx.Components;
-using EcsRx.Unity.EditorInputs;
 using EcsRx.Unity.Extensions;
+using EcsRx.Unity.EditorInputs;
 using EcsRx.Unity.Helpers;
 using UnityEditor;
 using UnityEngine;
