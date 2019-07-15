@@ -45,7 +45,7 @@ namespace NO1Software.ABSystem
         /// <summary>
         /// 加载队列
         /// </summary>
-        private List<AssetBundleLoader> _currentLoadQueue = new List<AssetBundleLoader>();
+        private HashSet<AssetBundleLoader> _currentLoadQueue = new HashSet<AssetBundleLoader>();
         /// <summary>
         /// 未完成的
         /// </summary>
@@ -163,6 +163,7 @@ namespace NO1Software.ABSystem
                 {
                     Debug.LogError(string.Format("{0} not exist!", depFile));
                 }
+                w.Dispose();
             }
             this.InitComplete();
             yield return null;
