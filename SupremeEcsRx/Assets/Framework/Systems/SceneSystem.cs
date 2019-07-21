@@ -38,6 +38,8 @@ namespace EcsRx.Unity.Systems
             }
         }
 
+
+
         public void Teardown(IEntity entity)
         {
             ExitScene(scene);
@@ -47,36 +49,17 @@ namespace EcsRx.Unity.Systems
         {
             var sceneComponent = entity.GetComponent<SceneComponent>();
             scene = sceneComponent.Scene;
-            SceneManager.SetActiveScene(scene);
             InitScene(sceneComponent.Scene);
         }
 
         public virtual void InitScene(Scene scene)
         {
-            SceneContext sceneContext = null;
-            ;
-            foreach (var root in scene.GetRootGameObjects())
-            {
-                sceneContext = root.GetComponent<SceneContext>();
-                if (sceneContext != null)
-                {
-                    break;
-                }
-            }
-            DependencyContainer = new ZenjectDependencyContainer(sceneContext.Container);
-            SystemExecutor = DependencyContainer.Resolve<ISystemExecutor>();
+           
         }
 
         public virtual void ExitScene(Scene scene)
         {
             disposables.Dispose();
-        }
-
-        protected virtual ISystem RegisterBoundSystem<T>() where T : ISystem
-        {
-            var system = DependencyContainer.Resolve<T>();
-            SystemExecutor.AddSystem(system);
-            return system;
         }
     }
 }

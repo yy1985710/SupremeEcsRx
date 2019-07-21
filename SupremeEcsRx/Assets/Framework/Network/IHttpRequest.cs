@@ -18,7 +18,7 @@ namespace EcsRx.Unity.Network
             where TResponse : HttpResponseMessage<HttpResponseData<TOut>, TOut>, new();
     }
 
-    public class HttpRequestFactory : Factory<string, int, bool, IHttpRequest>
+    public class HttpRequestFactory : PlaceholderFactory<string, int, IHttpRequest>
     {
     }
 

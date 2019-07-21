@@ -22,16 +22,9 @@ namespace EcsRx.Unity.Network
 
         public IHttpRequest Create(string ip, int port)
         {
-            var httpRequest = factory.Create(ip, port, false);
+            var httpRequest = factory.Create(ip, port);
             httpRequests.Add(httpRequest);
             return httpRequest;
-        }
-
-        public IHttpRequest CreateWechat(string ip, int port)
-        {
-			WechatHttpRequest = factory.Create(ip, port, true);
-            httpRequests.Add(WechatHttpRequest);
-            return WechatHttpRequest;
         }
 
         public IHttpRequest Get(int index)
