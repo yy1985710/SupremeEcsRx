@@ -24,7 +24,7 @@ namespace EcsRx.Unity.Systems
     {
         protected string sceneName;
         protected Scene scene;
-        protected CompositeDisposable disposables;
+        protected CompositeDisposable disposables = new CompositeDisposable();
         [Inject]
         protected Managers.SceneManager sceneManager;
 
@@ -45,7 +45,6 @@ namespace EcsRx.Unity.Systems
 
         public void Setup(IEntity entity)
         {
-            disposables = new CompositeDisposable();
             var sceneComponent = entity.GetComponent<SceneComponent>();
             scene = sceneComponent.Scene;
             SceneManager.SetActiveScene(scene);
