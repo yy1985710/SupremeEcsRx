@@ -10,5 +10,9 @@ namespace EcsRx.Serialize
     {
         T Deserialize<T>(string data);
         object Deserialize(Type type, MemoryStream source);
+
+        object Deserialize(object type, MemoryStream source);
+
+        object Deserialize(object type, byte[] source);
     }
 }

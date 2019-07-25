@@ -7,7 +7,7 @@ namespace NO1Software.ABSystem
     /// </summary>
     public class AssetBundlePathResolver
     {
-        public static AssetBundlePathResolver instance;
+        private static AssetBundlePathResolver instance;
         public bool IsRemote = false;
         public string ServerUrl = "http://localhost:8080";
 

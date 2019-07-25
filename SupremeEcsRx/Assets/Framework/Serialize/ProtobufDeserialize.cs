@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,35 @@ namespace EcsRx.Serialize
 
         public object Deserialize(Type type, MemoryStream source)
         {
-             return ProtoBuf.Serializer.NonGeneric.Deserialize(type, source);
+            throw new NotImplementedException();
+        }
+
+        public object Deserialize(object type, MemoryStream source)
+        {
+            var message = type as IMessage;
+            if (message != null)
+            {
+                message.MergeFrom(source);
+                return message;
+            }
+            else
+            {
+                throw new InvalidCastException("the type don't derived from IMessage!");
+            }
+        }
+
+        public object Deserialize(object type, byte[] source)
+        {
+            var message = type as IMessage;
+            if (message != null)
+            {
+                message.MergeFrom(source);
+                return message;
+            }
+            else
+            {
+                throw new InvalidCastException("the type don't derived from IMessage!");
+            }
         }
     }
 }

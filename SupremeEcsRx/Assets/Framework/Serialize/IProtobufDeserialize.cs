@@ -8,5 +8,6 @@ namespace EcsRx.Serialize
 {
     public interface IProtobufDeserialize : IDeserialize
     {
+        
     }
 }

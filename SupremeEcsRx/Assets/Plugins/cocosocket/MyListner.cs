@@ -1,6 +1,4 @@
 ﻿using LitJson;
-using ProtoBuf;
-using ProtoBuf.Serializers;
 using System.Collections.Generic;
 using System;
 using System.IO;
@@ -22,7 +20,8 @@ namespace cocosocket4unity {
 			byte[] bs = bb.GetRaw();
 			Statics.SetXor(bs, bb.ReaderIndex());
 			MemoryStream stream = new MemoryStream(bs, bb.ReaderIndex(), bb.ReadableBytes());
-            object obj = ProtoBuf.Serializer.NonGeneric.Deserialize(MessageQueueHandler.GetProtocolType(cmd), stream);
+            MessageQueueHandler.GetProtocolType(cmd);
+            object obj = null;//ProtoBuf.Serializer.NonGeneric.Deserialize(MessageQueueHandler.GetProtocolType(cmd), stream);
             FieldInfo success = obj.GetType().GetField("success");
             if (success != null) { 
                 if ((bool)success.GetValue(obj) == true) {

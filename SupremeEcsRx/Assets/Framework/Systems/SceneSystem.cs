@@ -28,9 +28,6 @@ namespace EcsRx.Unity.Systems
         [Inject]
         protected Managers.SceneManager sceneManager;
 
-        protected ISystemExecutor SystemExecutor { get; private set; }
-        public IDependencyContainer DependencyContainer { get; private set; }
-
         public IGroup Group {
             get
             {
@@ -49,6 +46,7 @@ namespace EcsRx.Unity.Systems
         {
             var sceneComponent = entity.GetComponent<SceneComponent>();
             scene = sceneComponent.Scene;
+            SceneManager.SetActiveScene(scene);
             InitScene(sceneComponent.Scene);
         }
 

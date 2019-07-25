@@ -13,5 +13,6 @@ namespace EcsRx.Network
         public abstract int ErrorCode { get; }
         public T Response { get; set; }
         public abstract TU Data { get; }
+        public object RawData { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

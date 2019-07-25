@@ -17,7 +17,7 @@ namespace EcsRx.Unity.Modules
         {
             container.Bind<HttpManager>();
             container.Bind<SocketManager>();
-            container.Bind<IHttpProtocol, DefaultHttpProtocol>();
+            container.Bind<IHttpProtocol, HttpProtocol>();
             container.Bind<ISocketProtocol, SocketProtocol>();
             var zenjectContainer = container.NativeContainer as DiContainer;
             zenjectContainer.BindFactory<string, int, IHttpRequest, HttpRequestFactory>().To<HttpRequest>();

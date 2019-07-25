@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EcsRx.Infrastructure.Dependencies;
 using EcsRx.Infrastructure.Extensions;
 using EcsRx.Unity.Loader;
+using Zenject;
 
 namespace EcsRx.Unity.Modules
 {
@@ -18,7 +19,9 @@ namespace EcsRx.Unity.Modules
             container.Bind<RemoteFileLoader>();
             container.Bind<ImageLoader>();
             container.Bind<IResourceLoader, ResourceLoader>();
-            container.Bind<IResourceLoader, AssetBundleLoader>(new BindingConfiguration { WithName = "AssetBundle" });
+
+            var zenjectContainer = container.NativeContainer as DiContainer;
+            zenjectContainer.Bind<IResourceLoader>().WithId("AssetBundle").To<AssetBundleLoader>().AsSingle();
         }
     }
 }

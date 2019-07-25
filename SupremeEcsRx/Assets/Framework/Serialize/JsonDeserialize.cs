@@ -25,5 +25,15 @@ namespace EcsRx.Serialize
             //string data = Encoding.UTF8.GetString(source.ToArray());
             return JsonExtensions.DeserializeObject(type, data);
         }
+
+        public object Deserialize(object type, MemoryStream source)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Deserialize(object type, byte[] source)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

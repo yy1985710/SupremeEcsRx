@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace EcsRx.Network
 {
-    public abstract class HttpProtocol : IHttpProtocol
+    public class HttpProtocol : IHttpProtocol
     {
         public ISerialize Serialize { get; set; }
         public IDeserialize Deserialize { get; set; }
@@ -29,18 +29,18 @@ namespace EcsRx.Network
             byte[] data = Serialize.Serialize(message.Data);
             var str = Encoding.UTF8.GetString(data);
             Debug.Log("HttpRequest Request: " + str);
-            //byte[] encryptedData = Crypto.Encryption(data);
-            //var encode = Convert.ToBase64String(encryptedData);
-            return str;
+            byte[] encryptedData = Crypto.Encryption(data);
+            var encode = Convert.ToBase64String(encryptedData);
+            return encode;
         }
 
         public HttpResponseMessage<HttpResponseData<TOut>, TOut> DecodeMessage<TOut, TResponse>(string data) where TOut : class where TResponse : HttpResponseMessage<HttpResponseData<TOut>, TOut>, new()
         {
             var response = new TResponse();
-            response.Response = Deserialize.Deserialize<HttpResponseData<TOut>>(data);
-            //var base64Data = Convert.FromBase64String(data);
-            //var decryptionData = Crypto.Decryption(base64Data);
-
+            var base64Data = Convert.FromBase64String(data);
+            var decryptionData = Crypto.Decryption(base64Data);
+            var dataString = System.Text.Encoding.UTF8.GetString(decryptionData);
+            response.Response = Deserialize.Deserialize<HttpResponseData<TOut>>(dataString);
             return response;
         }
 

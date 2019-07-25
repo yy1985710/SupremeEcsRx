@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,21 +9,20 @@ namespace EcsRx.Serialize
 {
     public class ProtobufSerialize : IProtobufSerialize
     {
-        public byte[] Serialize<T>(T data)
+        public byte[] Serialize<T>(T data) 
         {
-            using (var stream = new MemoryStream())
+            var message = data as IMessage;
+            if (message != null)
             {
-                ProtoBuf.Serializer.Serialize(stream, data);
-                return stream.ToArray();
+                using (var stream = new MemoryStream())
+                {
+                    message.WriteTo(stream);
+                    return stream.ToArray();
+                }
             }
-        }
-
-        public byte[] Serialize(object target)
-        {
-            using (var stream = new MemoryStream())
+            else
             {
-                ProtoBuf.Serializer.NonGeneric.Serialize(stream, target);
-                return stream.ToArray();
+                throw new InvalidCastException("the type don't derived from IMessage!");
             }
         }
     }

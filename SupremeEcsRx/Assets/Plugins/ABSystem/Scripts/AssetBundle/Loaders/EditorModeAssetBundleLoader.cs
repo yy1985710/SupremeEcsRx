@@ -53,7 +53,7 @@ namespace NO1Software.ABSystem
         {
             yield return new WaitForEndOfFrame();
 
-            string newPath = AssetBundlePathResolver.instance.GetEditorModePath(bundleName);
+            string newPath = AssetBundlePathResolver.Instance.GetEditorModePath(bundleName);
             Object mainObject = AssetDatabase.LoadMainAssetAtPath(newPath);
             if (mainObject)
             {

@@ -10,6 +10,7 @@ namespace EcsRx.Unity.Scenes
         public static class SceneName
         {
             public const string RootScene = "Project";
+            public const string LoginScene = "Login";
         }
     }
 }

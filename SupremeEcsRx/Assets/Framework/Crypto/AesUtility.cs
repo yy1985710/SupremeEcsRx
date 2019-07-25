@@ -8,90 +8,30 @@ namespace EcsRx.Crypto
     {
         public static byte[] Encrption(byte[] input, string key, string iv)
         {
-            MemoryStream msEncrypt = null;
-            RijndaelManaged aesAlg = null;
-
-            try
-            {
-                byte[] keys = System.Text.Encoding.UTF8.GetBytes(key);
-                byte[] ivs = System.Text.Encoding.UTF8.GetBytes(iv);
-                aesAlg = new RijndaelManaged();
-
-                aesAlg.Key = keys;
-                aesAlg.IV = ivs;
-
-                ICryptoTransform ict = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
-                msEncrypt = new MemoryStream();
-
-                using (CryptoStream cts = new CryptoStream(msEncrypt, ict, CryptoStreamMode.Write))
-                {
-                    using (StreamWriter sw = new StreamWriter(cts))
-                    {
-                        sw.Write(input);
-                    }
-                }
-                return msEncrypt.ToArray();
-            }
-            finally
-            {
-                if (aesAlg != null)
-                {
-                    
-                    //aesAlg.Dispose();
-                    aesAlg.Clear();
-                }
-                msEncrypt?.Close();
-            }
-
-            //if (msEncrypt != null)
-            //{
-            //    byte[] content = msEncrypt.ToArray();
-
-            //    sresult = Convert.ToBase64String(content);
-            //}
-        }
-
-        public static string Decrption(byte[] input, string key, string iv)
-        {
-            string sresult = string.Empty;
-
             byte[] keys = System.Text.Encoding.UTF8.GetBytes(key);
             byte[] ivs = System.Text.Encoding.UTF8.GetBytes(iv);
+            RijndaelManaged aes = new RijndaelManaged();
 
-            //byte[] inputbytes = Convert.FromBase64String(input);
+            aes.Key = keys;
+            aes.IV = ivs;
 
-            RijndaelManaged rm = null;
+            ICryptoTransform transform = aes.CreateEncryptor();
+            byte[] resultArray = transform.TransformFinalBlock(input, 0, input.Length);
+            return resultArray;
+        }
 
-            try
-            {
-                rm = new RijndaelManaged();
-                rm.Key = keys;
-                rm.IV = ivs;
+        public static byte[] Decrption(byte[] input, string key, string iv)
+        {
+            byte[] keys = System.Text.Encoding.UTF8.GetBytes(key);
+            byte[] ivs = System.Text.Encoding.UTF8.GetBytes(iv);
+            RijndaelManaged aes = new RijndaelManaged();
 
-                ICryptoTransform ict = rm.CreateDecryptor(rm.Key, rm.IV);
+            aes.Key = keys;
+            aes.IV = ivs;
 
-                using (MemoryStream ms = new MemoryStream(input))
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, ict, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader sr = new StreamReader(cs))
-                        {
-                            sresult = sr.ReadToEnd();
-                        }
-                    }
-                }
-
-            }
-            finally
-            {
-                if (rm != null)
-                {
-                    //rm.Dispose();
-                    rm.Clear();
-                }
-            }
-
-            return sresult;
+            ICryptoTransform transform = aes.CreateDecryptor();
+            byte[] resultArray = transform.TransformFinalBlock(input, 0, input.Length);
+            return resultArray;
         }
     }
 }

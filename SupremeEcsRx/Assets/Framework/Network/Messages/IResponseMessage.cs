@@ -5,8 +5,13 @@ using System.Text;
 
 namespace EcsRx.Network
 {
-    public interface IResponseMessage<out T> : INetworkMessage
+    public interface IResponseMessage<T> : IResponseMessage
     {
         T Data { get; }
+    }
+
+    public interface IResponseMessage : INetworkMessage
+    {
+        object RawData { get; set; }
     }
 }
